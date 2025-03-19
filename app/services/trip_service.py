@@ -690,7 +690,7 @@ class TripService:
         """Get upcoming trips for a user with enriched data."""
         try:
             logger.info(f"Fetching upcoming trips for user: {user_id}, role: {role}")
-            now = datetime.utcnow().isoformat()
+            now = datetime.now().isoformat()
             
             upcoming_trips = []
             
@@ -776,7 +776,7 @@ class TripService:
         try:
             logger.info(f"Searching enriched trips with filters: {filters}")
             
-            query = supabase_admin.table('trips').select('*, users:driver_id(id, name, profile_image_url, institution)')\
+            query = supabase_admin.table('trips').select('*, users:driver_id(id, name, profile_image_url, institute)')\
                 .eq('status', filters['status'])\
                 .gt('start_time', filters['start_time_after'])
             
@@ -807,7 +807,7 @@ class TripService:
                                 'id': trip_data['users']['id'],
                                 'name': trip_data['users']['name'],
                                 'profile_image_url': trip_data['users']['profile_image_url'],
-                                'institution': trip_data['users'].get('institution')
+                                'institute': trip_data['users']['institute']
                             },
                             'departure_time': trip.start_time,
                             'price': str(trip.price),  # String to match RidePreview
@@ -843,7 +843,7 @@ class TripService:
                 'id': driver_data['id'],
                 'name': driver_data['name'],
                 'profile_image_url': driver_data['profile_image_url'],
-                'institution': driver_data.get('institution')
+                'institute': driver_data.get('institute')
             },
             'departure_time': trip.start_time,
             'price': str(trip.price),

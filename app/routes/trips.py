@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app.services.trip_service import TripService
 from app.utils.auth import token_required
+import datetime
 import logging
 
 # Set up logging
@@ -57,7 +58,7 @@ def search_enriched_trips(user_id):
     
     filters = {
         'status': 'scheduled',
-        'start_time_after': request.args.get('start_time_after', datetime.utcnow().isoformat()),
+        'start_time_after': request.args.get('start_time_after', datetime.datetime.now().isoformat()),
         'near_latitude': request.args.get('near_latitude'),
         'near_longitude': request.args.get('near_longitude'),
         'radius_km': request.args.get('radius_km', '10'),  # Default 10 km
